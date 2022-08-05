@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:wasteagram/screens/CameraScreen.dart';
 import 'package:wasteagram/screens/ShareLocationScreen.dart';
 
 class App extends StatelessWidget {
@@ -8,7 +9,8 @@ class App extends StatelessWidget {
   Widget build(BuildContext context) {
     return const MaterialApp(
       home: Scaffold(
-        body: ShareLocationScreen()
+        //body: ShareLocationScreen()
+        body: CameraScreen()
       )
     );
   }
