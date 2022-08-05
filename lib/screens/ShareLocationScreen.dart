@@ -6,10 +6,10 @@ class ShareLocationScreen extends StatefulWidget {
   const ShareLocationScreen({Key? key}) : super(key: key);
 
   @override
-  ShareLocationScreenState createState() => ShareLocationScreenState();
+  State<ShareLocationScreen> createState() => _ShareLocationScreenState();
 }
 
-class ShareLocationScreenState extends State<ShareLocationScreen> {
+class _ShareLocationScreenState extends State<ShareLocationScreen> {
   LocationData? locationData;
   var locationService = Location();
 
