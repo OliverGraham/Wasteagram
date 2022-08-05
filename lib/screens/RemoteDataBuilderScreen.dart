@@ -21,6 +21,14 @@ class _RemoteDataBuilderScreen extends State<RemoteDataBuilderScreen> {
         future: apiResponse,
         builder: (BuildContext context, AsyncSnapshot<http.Response> snapshot) {
           Widget child;
+
+          /*if (snapshot.connectionState == ConnectionState.done) {
+            // return some Widget
+            // or, if some error during Future resolution
+            if (snapshot.hasError) {
+              // return some error handling
+            }
+          }*/
           if (snapshot.hasData) {
             Character character =
             Character.fromJSON(jsonDecode(snapshot.data!.body));
