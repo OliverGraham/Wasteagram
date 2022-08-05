@@ -5,6 +5,15 @@ class App extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return Container(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text("Lat", style: Theme.of(context).textTheme.displayLarge),
+          Text("Long", style: Theme.of(context).textTheme.displayLarge),
+          ElevatedButton(onPressed: () {}, child: const Text('Share'))
+        ]
+      ),
+    );
   }
 }
