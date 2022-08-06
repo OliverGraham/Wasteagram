@@ -31,7 +31,6 @@ dependencies:
     sdk: flutter
   location: ^4.2.0
   image_picker: ^0.8.4+9
-  share: ^0.6.3
   http: ^0.13.5
   firebase_core: ^1.20.0
 
@@ -40,6 +39,8 @@ dependencies:
   cupertino_icons: ^1.0.2
   cloud_firestore: ^3.4.3
   firebase_storage: ^10.3.4
+  share_plus: ^4.0.10
+
 
 
 dev_dependencies:

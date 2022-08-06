@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -25,6 +26,30 @@ class _CameraScreenState extends State<CameraScreen> {
     setState(() {});
   }
 
+  void fireStorePicture() async {
+    final pickedFile = await picker.pickImage(source: ImageSource.camera);
+    if (pickedFile?.path != null) {
+      image = File(pickedFile!.path);
+    }
+
+    // give child() a unique file key-string
+    // use timestamp in name?
+    // or
+    // Path.basename(image?.path)
+    final storage = FirebaseStorage.instance.ref();
+    final storageReference = storage.child(
+      'storage_reference_some_crazy_name'
+    );
+    try {
+      await storageReference.putFile(image!);
+    } catch (e) {
+      print(e);
+    }
+
+    final url = await storageReference.getDownloadURL();
+    print(url);
+  }
+
   @override
   Widget build(BuildContext context) {
 
@@ -48,7 +73,7 @@ class _CameraScreenState extends State<CameraScreen> {
           ElevatedButton(
             child: const Text('Post it!'),
             onPressed: () {
-
+                fireStorePicture();
             },
           )
         ]
