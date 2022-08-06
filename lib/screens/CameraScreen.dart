@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -54,4 +55,31 @@ class _CameraScreenState extends State<CameraScreen> {
       )
     );
   }
+
+  Widget theStreamBuilder(BuildContext context) {
+    return StreamBuilder(
+      stream: FirebaseFirestore.instance.collection('nameOfCollection').snapshots(),
+      builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+      // initialData:  // add this somehow?
+
+        if (snapshot.hasData) {
+          // or, instead of if -> switch(snapshot.connectionState) {
+          // case ConnectionState.something: do something
+          return ListView.builder(
+            itemCount: snapshot.data?.docs.length,
+            itemBuilder: (context, index) {
+              var post = snapshot.data!.docs[index];
+              return ListTile(
+                // post['nameOfField'] from Firestore
+                leading: Text(post['weight'].toString()),
+                title: Text(post['title']));
+            },
+          );
+        }
+
+        return const Center(child: CircularProgressIndicator());
+      }
+    );
+  }
+
 }
