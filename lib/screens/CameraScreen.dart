@@ -65,16 +65,34 @@ class _CameraScreenState extends State<CameraScreen> {
         if (snapshot.hasData) {
           // or, instead of if -> switch(snapshot.connectionState) {
           // case ConnectionState.something: do something
-          return ListView.builder(
-            itemCount: snapshot.data?.docs.length,
-            itemBuilder: (context, index) {
-              var post = snapshot.data!.docs[index];
-              return ListTile(
-                // post['nameOfField'] from Firestore
-                leading: Text(post['weight'].toString()),
-                title: Text(post['title']));
-            },
+
+          return Column(
+            children: [
+              Expanded(
+                child:
+                ListView.builder(
+                  itemCount: snapshot.data?.docs.length,
+                  itemBuilder: (context, index) {
+                    var post = snapshot.data!.docs[index];
+                    return ListTile(
+                      // post['nameOfField'] from Firestore
+                        leading: Text(post['weight'].toString()),
+                        title: Text(post['title']));
+                  },
+                )
+              ),
+              ElevatedButton(
+                  onPressed: () {
+                    FirebaseFirestore.instance.collection('posts').add({
+                      'key': 222,
+                      'thiscan': 'be a map'
+                    });
+                  },
+                  child: const Text('Send Data to Firestore')
+              )
+            ]
           );
+
         }
 
         return const Center(child: CircularProgressIndicator());
