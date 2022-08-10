@@ -7,7 +7,7 @@ class WasteListScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Wasteagram')),
+      appBar: AppBar(title: const Text('Wasteagram')),/*
       body: StreamBuilder(
         floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
         floatingActionButton: Semantics(
@@ -20,7 +20,7 @@ class WasteListScreen extends StatelessWidget {
         builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
           return Container();
         },
-      )
+      )*/
 
     );
   }

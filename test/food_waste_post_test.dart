@@ -14,7 +14,7 @@ void main() {
 
 
     // second, exercise
-    final foodWastePost = FoodWastePost.fromMap({
+    final foodWastePost = FoodWastePost.fromJson({
       'date': date,
       'photoURL': url,
       'quantity': quantity,

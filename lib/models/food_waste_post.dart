@@ -15,15 +15,20 @@ class FoodWastePost {
     required this.longitude
   });
 
-  static fromMap(Map<String, Object> map) {
-    return FoodWastePost(
-        date: map['date'] as DateTime,
-        photoURL: map['photoURL'] as String,
-        quantity: map['quantity'] as int,
-        latitude: map['latitude'] as double,
-        longitude: map['longitude'] as double
-    );
-  }
+  factory FoodWastePost.fromJson(Map<String, dynamic> json) => FoodWastePost(
+      date: json['date'],
+      photoURL: json['photoURL'],
+      quantity: json['quantity'],
+      latitude: json['latitude'],
+      longitude: json['longitude']
+  );
 
+  Map<String, Object?> toJson() => {
+    'date': date,
+    'photoURL': photoURL,
+    'quantity': quantity,
+    'latitude': latitude,
+    'longitude': longitude,
+  };
 
 }
