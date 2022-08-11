@@ -2,14 +2,14 @@
 class FoodWastePost {
 
   DateTime date;
-  String photoURL;
+  String imageURL;
   int quantity;
   double latitude;
   double longitude;
 
   FoodWastePost({
     required this.date,
-    required this.photoURL,
+    required this.imageURL,
     required this.quantity,
     required this.latitude,
     required this.longitude
@@ -17,7 +17,7 @@ class FoodWastePost {
 
   factory FoodWastePost.fromJson(Map<String, dynamic> json) => FoodWastePost(
       date: json['date'],
-      photoURL: json['photoURL'],
+      imageURL: json['imageURL'],
       quantity: json['quantity'],
       latitude: json['latitude'],
       longitude: json['longitude']
@@ -25,7 +25,7 @@ class FoodWastePost {
 
   Map<String, Object?> toJson() => {
     'date': date,
-    'photoURL': photoURL,
+    'imageURL': imageURL,
     'quantity': quantity,
     'latitude': latitude,
     'longitude': longitude,
