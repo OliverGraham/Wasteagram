@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:wasteagram/screens/waste_list_screen.dart';
 import 'package:wasteagram/screens/new_waste_screen.dart';
 
+import 'screens/waste_detail_screen.dart';
+
 // compute function, to run things in separate Isolate?
 
 class App extends StatefulWidget {
@@ -9,6 +11,7 @@ class App extends StatefulWidget {
 
   static final routes = {
     WasteListScreen.route: (context) => const WasteListScreen(),
+    WasteDetailScreen.route: (context) => const WasteDetailScreen(),
     NewWasteScreen.route: (context) => const NewWasteScreen(),
   };
 
@@ -28,7 +31,7 @@ class _AppState extends State<App> {
       home: const Scaffold(
         resizeToAvoidBottomInset: false,
         //body: ShareLocationScreen()
-        body: NewWasteScreen()
+        body: WasteListScreen()
       )
     );
   }

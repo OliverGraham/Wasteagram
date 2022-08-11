@@ -25,12 +25,16 @@ class FoodWastePost {
   }
 
   factory FoodWastePost.fromJson(Map<String, dynamic> json) => FoodWastePost(
-      date: json['date'],
-      imageURL: json['imageURL'],
-      quantity: json['quantity'],
-      latitude: json['latitude'],
-      longitude: json['longitude']
+      date: json['date'].toDate(),
+      imageURL: json['imageURL'] as String,
+      quantity: json['quantity'] as int,
+      latitude: json['latitude'] as double,
+      longitude: json['longitude'] as double
   );
+
+  /*DateTime convertTimeStampToDateTime(Timestamp time) {
+    return DateTime.fromMillisecondsSinceEpoch(time * 1000);
+  }*/
 
   Map<String, Object?> toJson() => {
     'date': date,
