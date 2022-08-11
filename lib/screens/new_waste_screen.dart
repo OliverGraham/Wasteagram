@@ -1,12 +1,11 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:wasteagram/components/new_waste_form.dart';
 import 'package:wasteagram/firebase/firebase_manager.dart';
 import 'package:wasteagram/models/food_waste_post.dart';
-
-
-// From Canvas
+import 'package:location/location.dart';
+import '../utils/location_manager.dart';
 
 class NewWasteScreen extends StatefulWidget {
 
@@ -19,140 +18,106 @@ class NewWasteScreen extends StatefulWidget {
 
 class _NewWasteScreenState extends State<NewWasteScreen> {
 
-  File? image;
-  ImagePicker? picker;
+  LocationManager locationManager = LocationManager.getInstance();
   final formKey = GlobalKey<FormState>();
-  int numberOfWastedItems = 0;
+  int numberOfWastedItems = -1;
+  ImagePicker? picker;
+  File? image;
+
 
   /// open ImagePicker when navigating to this screen
   @override
   void initState() {
     super.initState();
     picker = ImagePicker();
-    setImageFromPicker();
+    _setImageFromPicker();
   }
 
   @override
   Widget build(BuildContext context) {
 
     if (image == null) {
-      return _loadingScreen();
+      return const Center(child: CircularProgressIndicator());
     }
-
-    return _screenWhenImage();
-  }
-
-  Widget _loadingScreen() {
-    return  Center(child:
-      Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: const [
-          CircularProgressIndicator()
-        ],
-      )
-    );
-  }
-
-  Widget _screenWhenImage() {
 
     return Scaffold(
       appBar: AppBar(centerTitle: true, title: const Text('Add new Post')),
       resizeToAvoidBottomInset: false,
-      body:
-        Column(
+      body: Column(
         children: [
-          const SizedBox(height: 10),
-          Expanded(child: Image.file(image!)),
-          const SizedBox(height: 40),
-          _numberInputForm(),
-          Expanded(child:
-            Align(
-              alignment: Alignment.bottomCenter,
-              child:  _uploadButton()
-            )
-          )
+          _chosenImage(),
+          const NewWasteForm(),
+          _uploadButton()
         ]
       )
     );
   }
 
+  Widget _chosenImage() {
+    return Padding(
+        padding: const EdgeInsets.fromLTRB(0, 10, 0, 5),
+        child: Image.file(image!, height: 375)
+    );
+  }
+
   Widget _uploadButton() {
-    return Semantics(
-      button: true,
-      enabled: true,
-      onTapHint: 'Upload image to cloud database',
-      child:  ElevatedButton.icon(
-        label: const Text(''),
-        icon: const Icon(Icons.cloud_upload, size: 100),
-        style: ElevatedButton.styleFrom(
-          minimumSize: const Size.fromHeight(100),
-        ),
-        onPressed: () {
-          uploadDataToFirestore();
-        },
-      ),
-    );
-  }
-
-  Widget _numberInputForm() {
-    return Form(
-      key: formKey,
-      child: Column(
-        children: [
-          TextFormField(
-            textAlign: TextAlign.center,
-            keyboardType: TextInputType.number,
-            inputFormatters:  <TextInputFormatter>[
-              FilteringTextInputFormatter.digitsOnly
-            ],
-            decoration:
-              const InputDecoration(hintText: 'Number of wasted items'),
-            validator: _validateNumber,
-            onSaved: _savedNumberOfWastedItems
+    return Expanded(
+      child: Align(
+        alignment: Alignment.bottomCenter,
+        child: Semantics(
+          button: true,
+          enabled: true,
+          onTapHint: 'Upload image to cloud database',
+          child: ElevatedButton.icon(
+            label: const Text(''),
+            icon: const Icon(Icons.cloud_upload, size: 100),
+            style: ElevatedButton.styleFrom(
+              minimumSize: const Size.fromHeight(10),
+            ),
+            onPressed: () {
+              _uploadDataToFirestore();
+            },
           )
-        ]
-      ),
+        )
+      )
     );
-  }
-
-  void _savedNumberOfWastedItems(dynamic amount) {
-    numberOfWastedItems = int.parse(amount);
-  }
-
-  String? _validateNumber(dynamic value) {
-    if (value == null) {
-      return 'Please enter the number of wasted items';
-    }
-    return null;
   }
 
   /// use ImagePicker to choose file and then save that path's state
-  void setImageFromPicker() async {
+  void _setImageFromPicker() async {
     // final pickedFile = await picker.pickImage(source: ImageSource.gallery);
     final pickedFile = await picker?.pickImage(source: ImageSource.camera);
     image = File(pickedFile!.path);
     setState(() {});
   }
 
-  void uploadDataToFirestore() async {
-    // final url = await getImage();
-    // File imageFile = await getImageFromPicker();
+  /// Save form state and upload to Firestore.
+  /// Show error message if necessary.
+  void _uploadDataToFirestore() async {
+    if (!NewWasteForm.isFormValid()) {
+      return;
+    }
+    NewWasteForm.saveForm();
+    _getInfoAndSave(NewWasteForm.getNumberOfWastedItems());
+    // Navigator.of(context).pop();
+  }
 
-    // final weight = DateTime.now().millisecondsSinceEpoch % 1000; // ?
-    final DateTime time = DateTime.now();
-    //final title = 'Title $weight';
-
+  /// Save time, image to Storage and get location, and save to Firestore
+  void _getInfoAndSave(int numberOfWastedItems) async {
+    final time = DateTime.now();
     final String url =
-    await FirebaseManager.saveImageAndReturnUrl(image, '$time.jpg');
+        await FirebaseManager.saveImageAndReturnUrl(image, '$time.jpg');
 
-    FirebaseManager.addPostDocument(FoodWastePost(
+    LocationData? locationData = await locationManager.getCurrentLocation();
+
+    FirebaseManager.addPostDocument(
+      FoodWastePost(
         date: time,
         imageURL: url,
-        quantity: 100,
-        latitude: 5.0,
-        longitude: 10.5)
+        quantity: numberOfWastedItems,
+        latitude: locationData?.latitude,
+        longitude: locationData?.longitude
+      )
     );
-
-    // TODO: navigate back to home screen
   }
 }

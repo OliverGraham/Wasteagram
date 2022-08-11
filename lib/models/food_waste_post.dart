@@ -1,19 +1,28 @@
+import 'package:intl/intl.dart';
 
 class FoodWastePost {
 
   DateTime date;
   String imageURL;
   int quantity;
-  double latitude;
-  double longitude;
+  double? latitude;
+  double? longitude;
 
   FoodWastePost({
     required this.date,
     required this.imageURL,
     required this.quantity,
-    required this.latitude,
-    required this.longitude
+    this.latitude = 0.0,
+    this.longitude = 0.0
   });
+
+  String getDate() {
+    return _parseDate(date);
+  }
+
+  static String _parseDate(DateTime dateTime) {
+    return DateFormat("EEEE, MMMM d, y").format(dateTime);
+  }
 
   factory FoodWastePost.fromJson(Map<String, dynamic> json) => FoodWastePost(
       date: json['date'],

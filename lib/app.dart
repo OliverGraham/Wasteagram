@@ -1,10 +1,6 @@
 import 'package:flutter/material.dart';
-//import 'package:wasteagram/screens/CameraScreen.dart';
-//import 'package:wasteagram/screens/ShareLocationScreen.dart';
 import 'package:wasteagram/screens/waste_list_screen.dart';
-import 'package:wasteagram/screens/camera_screen.dart';
 import 'package:wasteagram/screens/new_waste_screen.dart';
-//import 'package:wasteagram/screens/camera_screen.dart';
 
 // compute function, to run things in separate Isolate?
 
