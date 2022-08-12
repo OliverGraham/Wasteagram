@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:wasteagram/firebase/firebase_manager.dart';
+import '../app.dart';
 import '../components/camera_fab.dart';
 import '../components/post_list.dart';
 
@@ -39,7 +40,7 @@ class _WasteListScreenState extends State<WasteListScreen> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: Text('Wasteagram - ${_getAndSetTotalWastedItems(docs)}')
+        title: Text('${App.title} - ${_getAndSetTotalWastedItems(docs)}')
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: const CameraFab(),
@@ -51,6 +52,8 @@ class _WasteListScreenState extends State<WasteListScreen> {
     );
   }
 
+  /// Go through every document in Posts collection and
+  /// sum the quantity of wasted products
   num _getAndSetTotalWastedItems(List<QueryDocumentSnapshot<Object?>>? docs) {
     num total = 0;
 

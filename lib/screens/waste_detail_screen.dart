@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:wasteagram/components/chosen_image.dart';
 import 'package:wasteagram/models/food_waste_post.dart';
+
+import '../app.dart';
 
 class WasteDetailScreen extends StatelessWidget {
   const WasteDetailScreen({Key? key}) : super(key: key);
@@ -12,22 +15,39 @@ class WasteDetailScreen extends StatelessWidget {
     final post = ModalRoute.of(context)!.settings.arguments as FoodWastePost;
 
     return Scaffold(
+      appBar: AppBar(
+        centerTitle: true,
+        title: const Text(App.title)
+      ),
       body: Column(
         children: [
-          _chosenImage(post.imageURL),
-          // TODO: style here
-          Text(post.longitude.toString()),
-          Text(post.latitude.toString()),
-      ]),
+          const SizedBox(height: 20),
+          _largeText(context, post.getDateForDetailScreen()),
+          const SizedBox(height: 10),
+          ChosenImage(imageURL: post.imageURL),
+          const SizedBox(height: 50),
+          _largeText(context, '${post.quantity} items'),
+          _location(context, post.latitude, post.longitude),
+          const SizedBox(height: 20),
+        ]
+      ),
     );
   }
 
-  // TODO: make into class? Needs different styling or containers here
-  Widget _chosenImage(String image) {
-    return Padding(
-        padding: const EdgeInsets.fromLTRB(0, 10, 0, 5),
-        child: Image.network(image, height: 375)
+  Widget _largeText(BuildContext context, String text) {
+    return Text(text, style: Theme.of(context).textTheme.headline4);
+  }
+
+  Widget _location(BuildContext context, double? latitude, double? longitude) {
+    return Expanded(
+      child: Align(
+        alignment: Alignment.bottomCenter,
+        child: Text(
+        'Location: ($latitude, $longitude)',
+        style: Theme.of(context).textTheme.headline6)
+      )
     );
   }
+
 
 }

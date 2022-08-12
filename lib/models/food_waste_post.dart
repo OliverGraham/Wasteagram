@@ -16,12 +16,15 @@ class FoodWastePost {
     this.longitude = 0.0
   });
 
-  String getDate() {
-    return _parseDate(date);
+  static const _longDateFormat = 'EEEE, MMMM d, y';
+  static const _shortDateFormat = 'E, MMM d, y';
+
+  String getDateForListScreen() {
+    return DateFormat(_longDateFormat).format(date);
   }
 
-  static String _parseDate(DateTime dateTime) {
-    return DateFormat("EEEE, MMMM d, y").format(dateTime);
+  String getDateForDetailScreen() {
+    return DateFormat(_shortDateFormat).format(date);
   }
 
   factory FoodWastePost.fromJson(Map<String, dynamic> json) => FoodWastePost(
@@ -31,10 +34,6 @@ class FoodWastePost {
       latitude: json['latitude'] as double,
       longitude: json['longitude'] as double
   );
-
-  /*DateTime convertTimeStampToDateTime(Timestamp time) {
-    return DateTime.fromMillisecondsSinceEpoch(time * 1000);
-  }*/
 
   Map<String, Object?> toJson() => {
     'date': date,

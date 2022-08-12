@@ -10,13 +10,6 @@ class FirebaseManager {
   static final _fireStore = FirebaseFirestore.instance;
   static const _posts = 'posts';
 
-  static CollectionReference<FoodWastePost> getPostsCollection() {
-    return _fireStore.collection(_posts)
-        .withConverter<FoodWastePost>(
-        fromFirestore: (snapshot, _) => FoodWastePost.fromJson(snapshot.data()!),
-        toFirestore: (foodWastePost, _) => foodWastePost.toJson(),
-    );
-  }
   static Query<FoodWastePost> getOrderedPostsCollection() {
     return _fireStore.collection(_posts).orderBy('date', descending: true)
         .withConverter<FoodWastePost>(
@@ -34,7 +27,15 @@ class FirebaseManager {
   }
 
   static void addPostDocument(FoodWastePost post) {
-    getPostsCollection().add(post);
+    _getPostsCollection().add(post);
+  }
+
+  static CollectionReference<FoodWastePost> _getPostsCollection() {
+    return _fireStore.collection(_posts)
+        .withConverter<FoodWastePost>(
+      fromFirestore: (snapshot, _) => FoodWastePost.fromJson(snapshot.data()!),
+      toFirestore: (foodWastePost, _) => foodWastePost.toJson(),
+    );
   }
 
   static Future<String> saveImageAndReturnUrl(File? image, String name) async {

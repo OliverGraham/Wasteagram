@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:wasteagram/components/chosen_image.dart';
 import 'package:wasteagram/components/new_waste_form.dart';
 import 'package:wasteagram/firebase/firebase_manager.dart';
 import 'package:wasteagram/models/food_waste_post.dart';
@@ -45,18 +46,11 @@ class _NewWasteScreenState extends State<NewWasteScreen> {
       resizeToAvoidBottomInset: false,
       body: Column(
         children: [
-          _chosenImage(),
+          ChosenImage(imageFile: image),
           const NewWasteForm(),
           _uploadButton()
         ]
       )
-    );
-  }
-
-  Widget _chosenImage() {
-    return Padding(
-        padding: const EdgeInsets.fromLTRB(0, 10, 0, 5),
-        child: Image.file(image!, height: 375)
     );
   }
 
@@ -85,10 +79,17 @@ class _NewWasteScreenState extends State<NewWasteScreen> {
 
   /// use ImagePicker to choose file and then save that path's state
   void _setImageFromPicker() async {
-    // final pickedFile = await picker.pickImage(source: ImageSource.gallery);
     final pickedFile = await picker?.pickImage(source: ImageSource.camera);
+    await _returnIfBackButton(pickedFile);
     image = File(pickedFile!.path);
     setState(() {});
+  }
+
+  /// If camera is running and back button is pressed
+  Future<void> _returnIfBackButton(XFile? pickedFile) async {
+    if (pickedFile == null) {
+      Navigator.of(context).pop();
+    }
   }
 
   /// Save form state and upload to Firestore.

@@ -11,8 +11,8 @@ class PostListItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      leading: Text(post.getDate()),
-      trailing: Text(post.quantity.toString()),
+      leading: _largeText(context, post.getDateForListScreen()),
+      trailing: _largeText(context, post.quantity.toString()),
       onTap: () {
         Navigator.of(context).pushNamed(
             WasteDetailScreen.route,
@@ -20,5 +20,9 @@ class PostListItem extends StatelessWidget {
         );
       },
     );
+  }
+
+  Widget _largeText(BuildContext context, String text) {
+    return Text(text, style: Theme.of(context).textTheme.headline6);
   }
 }
