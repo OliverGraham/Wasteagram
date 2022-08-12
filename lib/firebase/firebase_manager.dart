@@ -17,6 +17,13 @@ class FirebaseManager {
         toFirestore: (foodWastePost, _) => foodWastePost.toJson(),
     );
   }
+  static Query<FoodWastePost> getOrderedPostsCollection() {
+    return _fireStore.collection(_posts).orderBy('date', descending: true)
+        .withConverter<FoodWastePost>(
+        fromFirestore: (snapshot, _) => FoodWastePost.fromJson(snapshot.data()!),
+        toFirestore: (foodWastePost, _) => foodWastePost.toJson(),
+    );
+  }
 
   static DocumentReference<FoodWastePost> getPostDocument(String documentId) {
     return _fireStore.collection(_posts).doc(documentId)

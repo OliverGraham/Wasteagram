@@ -12,7 +12,7 @@ class PostListItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListTile(
       leading: Text(post.getDate()),
-      title: Text(post.quantity.toString()),
+      trailing: Text(post.quantity.toString()),
       onTap: () {
         Navigator.of(context).pushNamed(
             WasteDetailScreen.route,

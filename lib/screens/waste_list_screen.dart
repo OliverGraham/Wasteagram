@@ -5,9 +5,10 @@ import '../components/camera_fab.dart';
 import '../components/post_list.dart';
 
 class WasteListScreen extends StatefulWidget {
-  const WasteListScreen({Key? key}) : super(key: key);
 
   static const route = 'waste_list_screen';
+
+  const WasteListScreen({Key? key}) : super(key: key);
 
   @override
   State<WasteListScreen> createState() => _WasteListScreenState();
@@ -15,61 +16,48 @@ class WasteListScreen extends StatefulWidget {
 
 class _WasteListScreenState extends State<WasteListScreen> {
 
-  int wasteNumber = 0;
+  num wasteNumber = 0;
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(centerTitle: true, title: Text('Wasteagram - $wasteNumber')),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-      floatingActionButton: const CameraFab(),
-      body: theStreamBuilder(context)
-    );
+    return _theStreamBuilder(context);
   }
 
-
-  Widget theStreamBuilder(BuildContext context) {
+  Widget _theStreamBuilder(BuildContext context) {
     return StreamBuilder(
-
-      stream: FirebaseManager.getPostsCollection().snapshots(),
+      stream: FirebaseManager.getOrderedPostsCollection().snapshots(),
       builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-        // initialData:  // add this somehow?
-
         if (snapshot.hasData) {
-          // or, instead of if -> switch(snapshot.connectionState) {
-          // case ConnectionState.something: do something
-          //List<QueryDocumentSnapshot<Object?>>? docs = snapshot.data?.docs;
-
-          return Column(
-            children: [
-              //Expanded(child: _listView(snapshot.data?.docs)),
-              Expanded(child: PostList(docs: snapshot.data?.docs)),
-            ]
-          );
+          return _listScaffold(snapshot.data?.docs);
         }
         return const Center(child: CircularProgressIndicator());
       }
     );
   }
 
-  /*Widget _listView(List<QueryDocumentSnapshot<Object?>>? docs) {
-    return ListView.builder(
-      itemCount: docs?.length,
-      itemBuilder: (context, index) {
-        final post = FoodWastePost.fromJson(docs![index] as Map<String, Object?>);
-        return ListTile(
-          leading: Text(post.getDate()),
-          title: Text(post.quantity.toString()),
-          onTap: () {
-            Navigator.of(context).pushNamed(
-              WasteDetailScreen.route,
-              arguments: post
-            );
-          },
-        );
-      },
+  Widget _listScaffold(List<QueryDocumentSnapshot<Object?>>? docs) {
+    return Scaffold(
+      appBar: AppBar(
+        centerTitle: true,
+        title: Text('Wasteagram - ${_getAndSetTotalWastedItems(docs)}')
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      floatingActionButton: const CameraFab(),
+      body: Column(
+        children: [
+          Expanded(child: PostList(docs: docs)),
+        ]
+      )
     );
-  }*/
+  }
 
+  num _getAndSetTotalWastedItems(List<QueryDocumentSnapshot<Object?>>? docs) {
+    num total = 0;
 
+    docs?.forEach((doc) {
+      total += doc['quantity'];
+    });
+
+    return total;
+  }
 }

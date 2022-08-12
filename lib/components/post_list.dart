@@ -8,6 +8,7 @@ class PostList extends StatelessWidget {
 
   final List<QueryDocumentSnapshot<Object?>>? docs;
 
+  // TODO: style here
   @override
   Widget build(BuildContext context) {
     return ListView.builder(

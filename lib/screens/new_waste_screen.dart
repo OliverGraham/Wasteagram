@@ -99,7 +99,7 @@ class _NewWasteScreenState extends State<NewWasteScreen> {
     }
     NewWasteForm.saveForm();
     _getInfoAndSave(NewWasteForm.getNumberOfWastedItems());
-    // Navigator.of(context).pop();
+    Navigator.of(context).pop();
   }
 
   /// Save time, image to Storage and get location, and save to Firestore

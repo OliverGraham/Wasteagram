@@ -15,13 +15,14 @@ class WasteDetailScreen extends StatelessWidget {
       body: Column(
         children: [
           _chosenImage(post.imageURL),
+          // TODO: style here
           Text(post.longitude.toString()),
           Text(post.latitude.toString()),
       ]),
     );
   }
 
-  // TODO: make into class
+  // TODO: make into class? Needs different styling or containers here
   Widget _chosenImage(String image) {
     return Padding(
         padding: const EdgeInsets.fromLTRB(0, 10, 0, 5),

@@ -1,7 +1,9 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:wasteagram/screens/waste_list_screen.dart';
 import 'package:wasteagram/screens/new_waste_screen.dart';
 
+import 'firebase/firebase_manager.dart';
 import 'screens/waste_detail_screen.dart';
 
 // compute function, to run things in separate Isolate?
@@ -30,9 +32,9 @@ class _AppState extends State<App> {
       routes: App.routes,
       home: const Scaffold(
         resizeToAvoidBottomInset: false,
-        //body: ShareLocationScreen()
         body: WasteListScreen()
       )
     );
   }
+
 }
