@@ -1,29 +1,46 @@
+import 'package:intl/intl.dart';
 
 class FoodWastePost {
 
   DateTime date;
-  String photoURL;
+  String imageURL;
   int quantity;
-  double latitude;
-  double longitude;
+  double? latitude;
+  double? longitude;
 
   FoodWastePost({
     required this.date,
-    required this.photoURL,
+    required this.imageURL,
     required this.quantity,
-    required this.latitude,
-    required this.longitude
+    this.latitude = 0.0,
+    this.longitude = 0.0
   });
 
-  static fromMap(Map<String, Object> map) {
-    return FoodWastePost(
-        date: map['date'] as DateTime,
-        photoURL: map['photoURL'] as String,
-        quantity: map['quantity'] as int,
-        latitude: map['latitude'] as double,
-        longitude: map['longitude'] as double
-    );
+  static const _longDateFormat = 'EEEE, MMMM d, y';
+  static const _shortDateFormat = 'E, MMM d, y';
+
+  String getDateForListScreen() {
+    return DateFormat(_longDateFormat).format(date);
   }
 
+  String getDateForDetailScreen() {
+    return DateFormat(_shortDateFormat).format(date);
+  }
+
+  factory FoodWastePost.fromJson(Map<String, dynamic> json) => FoodWastePost(
+      date: json['date'].toDate(),
+      imageURL: json['imageURL'] as String,
+      quantity: json['quantity'] as int,
+      latitude: json['latitude'] as double,
+      longitude: json['longitude'] as double
+  );
+
+  Map<String, Object?> toJson() => {
+    'date': date,
+    'imageURL': imageURL,
+    'quantity': quantity,
+    'latitude': latitude,
+    'longitude': longitude,
+  };
 
 }
