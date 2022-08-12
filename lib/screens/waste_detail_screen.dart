@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:wasteagram/components/chosen_image.dart';
 import 'package:wasteagram/models/food_waste_post.dart';
-
 import '../app.dart';
 
 class WasteDetailScreen extends StatelessWidget {

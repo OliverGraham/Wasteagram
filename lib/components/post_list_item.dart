@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:wasteagram/models/food_waste_post.dart';
-
 import '../screens/waste_detail_screen.dart';
 
 class PostListItem extends StatelessWidget {
